@@ -18,6 +18,15 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/game_desc"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/game_name"
         android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/game_image"
+        android:src="@drawable/ic_launcher"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true" />
 </RelativeLayout>
