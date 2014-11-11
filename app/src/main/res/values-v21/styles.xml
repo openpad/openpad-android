@@ -2,4 +2,9 @@
 <resources>
     <style name="AppTheme" parent="android:Theme.Material.Light">
     </style>
+
+    <style name="ControllerTheme" parent="AppTheme">
+       <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
 </resources>
