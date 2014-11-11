@@ -20,10 +20,18 @@ public class NetworkManager {
 
     static ServerDiscoveryListener listener;
     static HashSet<String> hosts = new HashSet<String>();
+    static ArrayList<GameConnection> games = new ArrayList<GameConnection>();
+    static GameConnection joinedGame;
+    static boolean isInGame=false;
 
     public static void findServers(ServerDiscoveryListener listener) {
         NetworkManager.listener = listener;
         new DiscoverTask().execute();
+    }
+
+    public static void didJoin(GameConnection gameConnection) {
+        joinedGame = gameConnection;
+        listener.joinGame();
     }
 
     static class DiscoverTask extends AsyncTask<Void, Void, Void> {
@@ -83,7 +91,17 @@ public class NetworkManager {
 
     }
 
+    public static void addConnection(GameConnection gc){
+        games.add(gc);
+        listener.setGames(games);
+    }
+
+    public static void refreshConnections() {
+        listener.setGames(games);
+    }
+
     public static interface ServerDiscoveryListener {
         public void setGames(ArrayList<GameConnection> games);
+        public void joinGame();
     }
 }
