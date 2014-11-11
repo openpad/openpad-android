@@ -2,6 +2,7 @@ package com.hw.openpad.android;
 
 import android.util.Log;
 
+import com.hw.openpad.android.model.NetworkManager;
 import com.hw.openpad.android.model.Request;
 import com.hw.openpad.android.model.Response;
 import com.hw.openpad.android.model.UserData;
@@ -19,20 +20,19 @@ import java.net.Socket;
 * Created by ethan on 10/29/14.
 */
 public class GameConnection {
-    Socket socket;
-    InputStream inputStream;
-    OutputStream outputStream;
-    InetAddress ip;
-    public String name, description, banReason;
-    int port, openSlots, filledSlots;
-    boolean isBanned;
-    private Thread thread;
+    Socket mSocket;
+    InputStream mInputStream;
+    OutputStream mOutputStream;
+    public String mName, mDescription, mBanReason, mIcon;
+    int mOpenSlots, mFilledSlots;
+    boolean mIsBanned;
+    private Thread mThread;
 
     public GameConnection(InetAddress ip, Integer port) {
         try {
-            this.socket = new Socket(ip, port);
-            inputStream = socket.getInputStream();
-            outputStream = socket.getOutputStream();
+            this.mSocket = new Socket(ip, port);
+            mInputStream = mSocket.getInputStream();
+            mOutputStream = mSocket.getOutputStream();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,7 +51,7 @@ public class GameConnection {
 
             request.data.put("APIVersion", 1);
 
-            outputStream.write(request.toString().getBytes());
+            mOutputStream.write(request.toString().getBytes());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,6 +70,11 @@ public class GameConnection {
             Response response = new Response(msg);
             if (response.data.has("game")) {
                 setInfo(response.data);
+            } else if (response.data.has("accepted")) {
+                boolean accepted = response.data.getBoolean("accepted");
+                if (accepted) {
+                    NetworkManager.didJoin(this);
+                }
             }
         } catch (Exception e){
             e.printStackTrace();
@@ -78,12 +83,22 @@ public class GameConnection {
 
     private void setInfo(JSONObject jsonObject) {
         try {
-            description = jsonObject.getString("description");
-            name = jsonObject.getString("name");
-            openSlots = jsonObject.getInt("openslots");
-            filledSlots = jsonObject.getInt("filledslots");
-            isBanned = jsonObject.getBoolean("is");
-            banReason = jsonObject.getString("why");
+            JSONObject gameData = jsonObject.getJSONObject("game");
+            boolean firstTime = mName == null;
+            mDescription = gameData.getString("desc");
+            mName = gameData.getString("name");
+            mOpenSlots = gameData.getInt("openslots");
+            mFilledSlots = gameData.getInt("filledslots");
+            mIcon = gameData.getString("icon");
+            JSONObject banned = jsonObject.getJSONObject("banned");
+            mIsBanned = banned.getBoolean("is");
+            mBanReason = banned.getString("why");
+
+            if (firstTime) {
+                NetworkManager.addConnection(this);
+            } else {
+                NetworkManager.refreshConnections();
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -91,14 +106,14 @@ public class GameConnection {
     }
 
     public void listen() {
-        thread = new Thread(new Runnable() {
+        mThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 byte[] buffer = new byte[1024];
                 String cur = "";
                 try {
-                    while (socket.isConnected()) {
-                        int amt = inputStream.read(buffer);
+                    while (mSocket.isConnected()) {
+                        int amt = mInputStream.read(buffer);
 
                         int bytesProcessed = 0;
                         do {
@@ -116,13 +131,13 @@ public class GameConnection {
                 }
             }
         });
-        thread.start();
+        mThread.start();
     }
 
     public void joinGame() {
         Request request = new Request(2);
         try {
-            outputStream.write(request.toString().getBytes());
+            mOutputStream.write(request.toString().getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }

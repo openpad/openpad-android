@@ -13,33 +13,34 @@ import java.util.UUID;
 
 public class InfoActivity extends Activity {
 
-    private String fname, lname, uname, uuid;
-    private EditText fnameText, lnameText, unameText;
+    private String mFirstName, mLastName, mUsername, mUuid;
+    private EditText mFirstNameText, mLastNameText, mUsernameText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
-        fnameText = (EditText) findViewById(R.id.firstname);
-        unameText = (EditText) findViewById(R.id.username);
-        lnameText = (EditText) findViewById(R.id.lastname);
+        mFirstNameText = (EditText) findViewById(R.id.firstname);
+        mUsernameText = (EditText) findViewById(R.id.username);
+        mLastNameText = (EditText) findViewById(R.id.lastname);
 
         UserData.load();
     }
 
     public void next(View v) {
-        fname = fnameText.getText().toString();
-        lname = lnameText.getText().toString();
-        uname = unameText.getText().toString();
-        uuid = UUID.randomUUID().toString();
-        Log.d("PlayPhone", "generated UUID: "+uuid);
-        UserData.put("firstname", fname);
-        UserData.put("lastname", lname);
-        UserData.put("username", uname);
-        UserData.put("phoneID", uuid);
+        mFirstName = mFirstNameText.getText().toString();
+        mLastName = mLastNameText.getText().toString();
+        mUsername = mUsernameText.getText().toString();
+        mUuid = UUID.randomUUID().toString();
+        Log.d("PlayPhone", "generated UUID: "+ mUuid);
+        UserData.put("firstname", mFirstName);
+        UserData.put("lastname", mLastName);
+        UserData.put("username", mUsername);
+        UserData.put("phoneID", mUuid);
         UserData.put("fbuid", "");
 
         Intent i = new Intent(this, GameListActivity.class);
         startActivity(i);
+        finish();
     }
 }
