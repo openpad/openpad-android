@@ -21,8 +21,8 @@ public class NetworkManager {
     static ServerDiscoveryListener listener;
     static HashSet<String> hosts = new HashSet<String>();
     static ArrayList<GameConnection> games = new ArrayList<GameConnection>();
-    static GameConnection joinedGame;
-    static boolean isInGame=false;
+    public static GameConnection joinedGame;
+    static boolean isInGame = false, shouldDiscover;
 
     public static void findServers(ServerDiscoveryListener listener) {
         NetworkManager.listener = listener;
@@ -34,7 +34,15 @@ public class NetworkManager {
         listener.joinGame();
     }
 
+    public static void setShouldDiscover(boolean bool) {
+        shouldDiscover = bool;
+    }
+
     static class DiscoverTask extends AsyncTask<Void, Void, Void> {
+
+        public DiscoverTask(){
+
+        }
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -49,7 +57,7 @@ public class NetworkManager {
                     socket.send(packet);
                 }
 
-                while (true) {
+                while (shouldDiscover) {
                     socket.receive(packet);
                     if (packet.getPort() == 9999) {
                         data = packet.getData();
@@ -91,9 +99,20 @@ public class NetworkManager {
 
     }
 
-    public static void addConnection(GameConnection gc){
+    public static void addConnection(GameConnection gc) {
         games.add(gc);
         listener.setGames(games);
+    }
+
+    public static void removeConnection(GameConnection gc) {
+        games.remove(gc);
+    }
+
+    public static void disconnectAll() {
+        for (GameConnection gc : games) {
+            removeConnection(gc);
+            gc.disconnect();
+        }
     }
 
     public static void refreshConnections() {
