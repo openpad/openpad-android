@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="primary_red">#F44336</drawable>
+    <drawable name="primary_dark_red">#D32F2F</drawable>
+    <drawable name="accent_red">#B71C1C</drawable>
+    <drawable name="light_red">#AA3939</drawable>
+    <drawable name="dark_red">#801515</drawable>
+    <drawable name="light_yellow">#AAA039</drawable>
+    <drawable name="dark_yellow">#807615</drawable>
+    <drawable name="light_blue">#294F6D</drawable>
+    <drawable name="dark_blue">#123652</drawable>
+    <drawable name="light_green">#2D882D</drawable>
+    <drawable name="dark_green">#116611</drawable>
+    <drawable name="light_grey">#8e8e8e</drawable>
+    <drawable name="medium_grey">#585858</drawable>
+    <drawable name="dark_grey">#282828</drawable>
+
+    <color name="primary_red">#F44336</color>
+    <color name="primary_dark_red">#D32F2F</color>
+    <color name="accent_red">#B71C1C</color>
+    <color name="light_red">#AA3939</color>
+    <color name="dark_red">#801515</color>
+    <color name="light_yellow">#AAA039</color>
+    <color name="dark_yellow">#807615</color>
+    <color name="light_blue">#294F6D</color>
+    <color name="dark_blue">#123652</color>
+    <color name="light_green">#2D882D</color>
+    <color name="dark_green">#116611</color>
+    <color name="light_grey">#8e8e8e</color>
+    <color name="medium_grey">#585858</color>
+    <color name="dark_grey">#282828</color>
+</resources>
