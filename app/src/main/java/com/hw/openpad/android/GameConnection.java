@@ -1,5 +1,6 @@
 package com.hw.openpad.android;
 
+import android.graphics.Point;
 import android.util.Log;
 
 import com.hw.openpad.android.model.NetworkManager;
@@ -25,8 +26,10 @@ public class GameConnection {
     OutputStream mOutputStream;
     public String mName, mDescription, mBanReason, mIcon;
     int mOpenSlots, mFilledSlots;
-    boolean mIsBanned;
+    boolean mIsBanned, mHasJoined;
     private Thread mThread;
+    public JSONObject mPadConfig;
+    private ControllerDelegate mDelegate;
 
     public GameConnection(InetAddress ip, Integer port) {
         try {
@@ -74,6 +77,8 @@ public class GameConnection {
                 boolean accepted = response.data.getBoolean("accepted");
                 if (accepted) {
                     NetworkManager.didJoin(this);
+                    mPadConfig = response.data.getJSONObject("padconfig");
+                    if(mDelegate!=null)mDelegate.setPadConfig(mPadConfig);
                 }
             }
         } catch (Exception e){
@@ -135,10 +140,48 @@ public class GameConnection {
     }
 
     public void joinGame() {
-        Request request = new Request(2);
+        if (!mHasJoined) {
+            NetworkManager.joinedGame = this;
+            mHasJoined = true;
+            Request request = new Request(2);
+            try {
+                mOutputStream.write(request.toString().getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void disconnect() {
+        Request request = new Request(3);
         try {
             mOutputStream.write(request.toString().getBytes());
+            mSocket.close();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setDelegate(ControllerDelegate d){
+        mDelegate = d;
+    }
+
+    public interface ControllerDelegate{
+        public void setPadConfig(JSONObject padConfig);
+    }
+
+    public void sendPadUpdate(int id, Point coords, int action) {
+        Request request = new Request(5);
+        try {
+            request.data.put("action", action);
+            JSONObject coordinates = new JSONObject();
+            coordinates.put("x", coords.x);
+            coordinates.put("y", coords.y);
+            request.data.put("position", coordinates);
+            request.data.put("controlid", id);
+
+            mOutputStream.write(request.toString().getBytes());
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
