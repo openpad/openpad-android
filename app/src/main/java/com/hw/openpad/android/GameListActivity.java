@@ -24,15 +24,34 @@ public class GameListActivity extends Activity implements NetworkManager.ServerD
         mListView = (ListView) findViewById(R.id.game_list);
         this.mGameAdapter = new GameAdapter(this, 0);
         mListView.setAdapter(mGameAdapter);
-        NetworkManager.findServers(this);
+        NetworkManager.setShouldDiscover(true);
+        refresh();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        NetworkManager.disconnectAll();
+        NetworkManager.setShouldDiscover(true);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.game_list, menu);
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        NetworkManager.setShouldDiscover(false);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        NetworkManager.setShouldDiscover(false);
     }
 
     @Override
@@ -61,7 +80,14 @@ public class GameListActivity extends Activity implements NetworkManager.ServerD
     @Override
     public void joinGame() {
         Intent intent = new Intent(this, ControllerActivity.class);
-//        finish();
         startActivity(intent);
+    }
+
+    public void refresh(MenuItem item) {
+        refresh();
+    }
+
+    private void refresh() {
+        NetworkManager.findServers(this);
     }
 }
