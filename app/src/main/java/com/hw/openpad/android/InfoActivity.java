@@ -41,6 +41,5 @@ public class InfoActivity extends Activity {
 
         Intent i = new Intent(this, GameListActivity.class);
         startActivity(i);
-        finish();
     }
 }
