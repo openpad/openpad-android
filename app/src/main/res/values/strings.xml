@@ -10,5 +10,6 @@
     <string name="username">Username</string>
     <string name="ok">Ok</string>
     <string name="title_activity_controller">ControllerActivity</string>
+    <string name="title_activity_game_list">Game List</string>
 
 </resources>
