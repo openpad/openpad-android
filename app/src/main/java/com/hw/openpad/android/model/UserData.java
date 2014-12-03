@@ -52,7 +52,7 @@ public class UserData {
         System.out.println("json: " + json);
         editor = sharedPref.edit();
         editor.putString("userdata", json);
-        editor.commit();
+        editor.apply();
 
     }
 }
