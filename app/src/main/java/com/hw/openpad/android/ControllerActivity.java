@@ -11,6 +11,7 @@ import com.hw.openpad.android.model.NetworkManager;
 import com.hw.openpad.android.view.ButtonObject;
 import com.hw.openpad.android.view.ControlObject;
 import com.hw.openpad.android.view.DpadObject;
+import com.hw.openpad.android.view.JoystickObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,12 +23,13 @@ import java.util.ArrayList;
 public class ControllerActivity extends Activity implements GameConnection.ControllerDelegate {
 
     private ArrayList<ControlObject> controlsArray = new ArrayList<ControlObject>();
-    private RelativeLayout mRelativeLayout = (RelativeLayout) findViewById(R.id.controller_layout);
+    private RelativeLayout mRelativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_controller);
+        mRelativeLayout = (RelativeLayout) findViewById(R.id.controller_layout);
         NetworkManager.joinedGame.setDelegate(this);
         if (NetworkManager.joinedGame.mPadConfig != null){
             setPadConfig(NetworkManager.joinedGame.mPadConfig);
@@ -73,6 +75,10 @@ public class ControllerActivity extends Activity implements GameConnection.Contr
                     case 1: // dpad
                         DpadObject dpad = new DpadObject(this);
                         dpad.load(ctrl, layout, layout);
+                        break;
+                    case 2:
+                        JoystickObject joystick = new JoystickObject(this);
+                        joystick.load(ctrl, layout, layout);
                         break;
                     default:
                         Log.d("OpenPad", "Not a button");
