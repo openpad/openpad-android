@@ -81,7 +81,7 @@ public class ControllerActivity extends Activity implements GameConnection.Contr
                         joystick.load(ctrl, layout, layout);
                         break;
                     default:
-                        Log.d("OpenPad", "Not a button");
+                        Log.d("openpad", "Not a button");
                 }
             }
         } catch (JSONException e) {

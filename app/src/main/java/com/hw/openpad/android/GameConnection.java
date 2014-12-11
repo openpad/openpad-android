@@ -2,6 +2,7 @@ package com.hw.openpad.android;
 
 import android.graphics.Point;
 import android.util.Log;
+import android.util.Pair;
 
 import com.hw.openpad.android.model.NetworkManager;
 import com.hw.openpad.android.model.Request;
@@ -170,13 +171,13 @@ public class GameConnection {
         public void setPadConfig(JSONObject padConfig);
     }
 
-    public void sendPadUpdate(int id, Point coords, int action) {
+    public void sendPadUpdate(int id, Pair<Double, Double> coords, int action) {
         Request request = new Request(5);
         try {
             request.data.put("action", action);
             JSONObject coordinates = new JSONObject();
-            coordinates.put("x", coords.x);
-            coordinates.put("y", coords.y);
+            coordinates.put("x", coords.first);
+            coordinates.put("y", coords.second);
             request.data.put("position", coordinates);
             request.data.put("controlid", id);
 
@@ -184,5 +185,9 @@ public class GameConnection {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void sendPadUpdate(int id, Point coords, int action) {
+        sendPadUpdate(id, new Pair<Double, Double>(coords.x + 0.0, coords.y + 0.0), action);
     }
 }

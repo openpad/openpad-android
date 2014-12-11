@@ -61,17 +61,26 @@ public class DpadObject extends ControlObject {
     }
 
     public Point determineDirection(Point point) {
-        float dx = point.x - getX();
-        float dy = point.y - getY();
+        Point center = new Point((int) getX() + getWidth() / 2, (int) getY() + getHeight() / 2);
+        float dx = point.x - (getLeft() + getWidth() / 2);
+        float dy = point.y - (getTop() + getHeight() / 2);
 
-        int x = 0;
-        int y = 0;
+        int x = 0, y = 0;
 
-        if (dx < 1/3) x = -1;
-        else if (dx > 2/3) x = 1;
+//        Old way of determining direction to travel (bad for 4-way Dpad)
+//        if (dx < .4) x = -1;
+//        else if (dx > .6) x = 1;
+//
+//        if (dy < .4) y = 1;
+//        else if (dy > .6) y = -1;
 
-        if (dy < 1/3) y = -1;
-        else if (dy > 2/3) y = 1;
+        double ax = Math.abs(dx), ay = Math.abs(dy);
+        System.out.println(dx+","+dy);
+        if (ax > ay) {
+            x = dx > 0 ? 1 : -1;
+        } else {
+            y = dy > 0 ? 1 : -1;
+        }
 
         return new Point(x, y);
     }
