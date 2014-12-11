@@ -11,19 +11,22 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".InfoActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GameListActivity" />
+        <activity android:name=".GameListActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ControllerActivity"
             android:label="@string/title_activity_controller"
             android:parentActivityName=".GameListActivity"
-            android:theme="@style/ControllerTheme" >
+            android:theme="@style/ControllerTheme"
+            android:screenOrientation="landscape" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.hw.openpad.android.GameListActivity" />
