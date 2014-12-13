@@ -119,6 +119,8 @@ public class JoystickObject extends ControlObject {
     }
 
     public Pair<Double, Double> determineDirection(Point point) {
+        if (center == null)
+            center = new Point(mJoystickLayout.getWidth() / 2, mJoystickLayout.getWidth() / 2);
         return new Pair<Double, Double>((double) (point.x - center.x) / (double) getWidth() * 2,
                 (double) (center.y - point.y) / (double) getWidth() * 2);
     }
@@ -133,8 +135,8 @@ public class JoystickObject extends ControlObject {
 //    }
 //
     private void moveKnob(Point moveTo) {
-        mJoystickKnob.setX(moveTo.x - center.x);
-        mJoystickKnob.setY(moveTo.y + center.y - mJoystickKnob.getWidth());
+        mJoystickKnob.setX(moveTo.x + center.x);
+        mJoystickKnob.setY(moveTo.y + center.y + mJoystickKnob.getWidth());
     }
 
     private boolean isValidTouch(Point pt){
