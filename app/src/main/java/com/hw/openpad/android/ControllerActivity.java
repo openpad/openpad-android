@@ -76,7 +76,7 @@ public class ControllerActivity extends Activity implements GameConnection.Contr
                         DpadObject dpad = new DpadObject(this);
                         dpad.load(ctrl, layout, layout);
                         break;
-                    case 2:
+                    case 2: // joystick
                         JoystickObject joystick = new JoystickObject(this);
                         joystick.load(ctrl, layout, layout);
                         break;
