@@ -39,7 +39,8 @@ public class ControlObject extends View {
 
             int width = (int) (size.x * w);
             int height = (int) (size.y * h);
-            int left = (int) (x * size.x - width / 2);
+//            int left = (int) (x * size.x - width / 2);
+            int left = (int) (x * size.x - width / 4);
             int top = (int) (y * size.y - height / 2);
 
             return new Rect(left, top, left + width, top + height);
