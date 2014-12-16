@@ -1,10 +1,15 @@
 package com.hw.openpad.android;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import com.hw.openpad.android.model.NetworkManager;
@@ -24,18 +29,28 @@ public class ControllerActivity extends Activity implements GameConnection.Contr
 
     private ArrayList<ControlObject> controlsArray = new ArrayList<ControlObject>();
     private RelativeLayout mRelativeLayout;
+    private boolean mBlackBackground;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE); //Remove title bar
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN); //Remove notification bar
         setContentView(R.layout.activity_controller);
         mRelativeLayout = (RelativeLayout) findViewById(R.id.controller_layout);
+        loadSettings();
         NetworkManager.joinedGame.setDelegate(this);
         if (NetworkManager.joinedGame.mPadConfig != null){
             setPadConfig(NetworkManager.joinedGame.mPadConfig);
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadSettings();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -56,6 +71,16 @@ public class ControllerActivity extends Activity implements GameConnection.Contr
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void loadSettings() { // load user settings and make changes based on them
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        mBlackBackground = sharedPreferences.getBoolean("pref_black", false);
+        if (mBlackBackground) mRelativeLayout.setBackgroundColor(Color.BLACK);
+        else mRelativeLayout.setBackgroundColor(getResources().getColor(R.color.dark_grey));
+
+
     }
 
     @Override

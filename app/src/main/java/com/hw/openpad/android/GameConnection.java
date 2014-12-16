@@ -1,7 +1,6 @@
 package com.hw.openpad.android;
 
 import android.graphics.Point;
-import android.util.Log;
 import android.util.Pair;
 
 import com.hw.openpad.android.model.NetworkManager;
@@ -69,7 +68,7 @@ public class GameConnection {
     }
 
     private void handleMsg(String msg) {
-        Log.d("OpenPad", "received msg: " + msg);
+//        Log.d("OpenPad", "received msg: " + msg);
         try {
             Response response = new Response(msg);
             if (response.data.has("game")) {

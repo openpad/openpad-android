@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Appearance">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pref_black"
+            android:summary="Use true black backgrounds rather than dark grey"
+            android:title="@string/pref_black" />
+
+
+    </PreferenceCategory>
+</PreferenceScreen>

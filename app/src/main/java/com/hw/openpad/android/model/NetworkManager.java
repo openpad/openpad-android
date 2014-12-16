@@ -1,7 +1,6 @@
 package com.hw.openpad.android.model;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.hw.openpad.android.GameConnection;
 
@@ -68,7 +67,7 @@ public class NetworkManager {
                             new ConnectTask().execute(packet.getAddress(), port);
                             hosts.add(addr);
                         }
-                        Log.d("PlayPhone", "Found a server at: " + addr);
+//                        Log.d("openpad", "Found a server at: " + addr);
                     }
                     break;
                 }
@@ -116,6 +115,7 @@ public class NetworkManager {
     }
 
     public static void refreshConnections() {
+        setShouldDiscover(true);
         listener.setGames(games);
     }
 

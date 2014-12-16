@@ -87,17 +87,6 @@ public class JoystickObject extends ControlObject {
         }
     }
 
-    private void handleTouch(Point loc) {
-        if (!isValidTouch(loc)) return;
-        Pair<Double, Double> dir = determineDirection(loc);
-        NetworkManager.joinedGame.sendPadUpdate(mControlId, determineDirection(loc), 1);
-        System.out.println("x: " + loc.x + ", y: " + loc.y + ", left: " +
-                this.getLeft() + ", top: " + this.getTop() + ", right: " + this.getRight() +
-                ", bottom: " + this.getBottom());
-        System.out.println("dx: " + dir.first + ", dy: " + dir.second);
-        moveKnob(loc);
-    }
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         Point moveTo = new Point((int) event.getX(), (int) event.getY());
@@ -117,15 +106,26 @@ public class JoystickObject extends ControlObject {
         return false;
     }
 
-    public Pair<Double, Double> determineDirection(Point point) {
-        if (center == null)
-            center = new Point(mJoystickLayout.getWidth() / 2, mJoystickLayout.getWidth() / 2);
-        center = new Point(getLeft() + getWidth() / 2, getTop() + getWidth() / 2);
-        return new Pair<Double, Double>((double) (point.x - center.x) / (double) getWidth(),
-                (double) (point.y - center.y) / (double) getWidth() * -2);
+    private void handleTouch(Point loc) {
+        if (!isValidTouch(loc)) return;
+        Pair<Double, Double> dir = determineDirection(loc);
+        NetworkManager.joinedGame.sendPadUpdate(mControlId, dir, 1);
+        System.out.println("x: " + loc.x + ", y: " + loc.y + ", left: " +
+                this.getLeft() + ", top: " + this.getTop() + ", right: " + this.getRight() +
+                ", bottom: " + this.getBottom());
+        System.out.println("dx: " + dir.first + ", dy: " + dir.second);
+        moveKnob(loc);
     }
 
-    //
+    private Pair<Double, Double> determineDirection(Point point) {
+        if (center == null)
+//            center = new Point(mJoystickLayout.getWidth() * 3/8, mJoystickLayout.getWidth() * 2);
+            center = new Point(getLeft() + getWidth() * 3/8, getTop() + getWidth() * 3/8);
+        center = new Point(getLeft() + getWidth() / 2, getTop() + getWidth() / 2);
+        return new Pair<>((double) (point.x - center.x) / (double) getWidth(),
+                (double) (center.y - point.y) / (double) getWidth());
+    }
+
 //    public Pair<Double, Double> determineDirection(Point point) {
 //        Point center = new Point((int) getLeft() + getWidth() / 2, (int) getTop() - getHeight() / 2);
 //        double cx = (double) getLeft() + (double) (getWidth()) / 2, cy = (double) getTop() +
@@ -135,6 +135,7 @@ public class JoystickObject extends ControlObject {
 //                (double) (center.y - point.y) / (double) getWidth() * 2);
 //    }
 //
+
     private void moveKnob(Point moveTo) {
         mJoystickKnob.setX(moveTo.x + center.x);
         mJoystickKnob.setY(moveTo.y + center.y + mJoystickKnob.getWidth());
@@ -150,7 +151,8 @@ public class JoystickObject extends ControlObject {
 
     private void centerKnob() {
         if (center == null)
-            center = new Point(mJoystickLayout.getWidth() / 2, mJoystickLayout.getWidth() / 2);
+//            center = new Point(mJoystickLayout.getWidth() / 2, mJoystickLayout.getWidth() / 2);
+            center = new Point(getLeft() + getWidth() * 3/8, getTop() + getWidth() * 3/8);
         moveKnob(new Point(center.x, center.y));
     }
 

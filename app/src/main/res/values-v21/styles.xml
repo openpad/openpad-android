@@ -4,11 +4,14 @@
         <item name="android:colorPrimary">@color/primary_red</item>
         <item name="android:colorPrimaryDark">@color/primary_dark_red</item>
         <item name="android:colorAccent">@color/accent_red</item>
-        <!--<item name="android:colorButtonNormal">@color/primary_red</item>-->
     </style>
 
     <style name="ControllerTheme" parent="AppTheme">
 
+    </style>
+
+    <style name="InfoTheme" parent="AppTheme">
+        <item name="android:colorButtonNormal">@color/primary_red</item>
     </style>
 
 </resources>

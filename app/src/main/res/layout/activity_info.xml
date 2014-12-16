@@ -81,7 +81,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
             android:onClick="next"
-            android:text="@string/ok" />
+            android:text="@android:string/ok" />
 
     </LinearLayout>
 

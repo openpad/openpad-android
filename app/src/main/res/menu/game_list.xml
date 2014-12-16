@@ -5,6 +5,8 @@
         android:title="@string/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never" />
+        <!--android:onClick="openSettings" -->
+        <!--/>-->
     <item android:id="@+id/action_refresh"
         android:title="Refresh"
         android:onClick="refresh"

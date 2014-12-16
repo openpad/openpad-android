@@ -17,10 +17,13 @@ public class GameListActivity extends Activity implements NetworkManager.ServerD
     private GameAdapter mGameAdapter;
     private ListView mListView;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_list);
+
         mListView = (ListView) findViewById(R.id.game_list);
         this.mGameAdapter = new GameAdapter(this, 0);
         mListView.setAdapter(mGameAdapter);
@@ -42,6 +45,7 @@ public class GameListActivity extends Activity implements NetworkManager.ServerD
         return true;
     }
 
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -61,8 +65,9 @@ public class GameListActivity extends Activity implements NetworkManager.ServerD
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            return true;
-        }
+            startActivity(new Intent(this, SettingsActivity.class));
+        } else if (id == R.id.action_refresh)
+            NetworkManager.refreshConnections();
         return super.onOptionsItemSelected(item);
     }
 
@@ -90,4 +95,5 @@ public class GameListActivity extends Activity implements NetworkManager.ServerD
     private void refresh() {
         NetworkManager.findServers(this);
     }
+
 }
